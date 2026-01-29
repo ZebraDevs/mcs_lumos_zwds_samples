@@ -1,0 +1,31 @@
+name: SonarQube Integration
+
+on:
+  push:
+    branches:
+      - '*'  # Matches all branches
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarqube:
+    name: SonarQube Integration
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+        
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Sonar Token generated
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  # Example URL (https://sq.bswlog.co.in/)
+      
+
+    - name: Publish SonarQube results
+      if: always()
+      run: |
+        echo "Publishing SonarQube analysis results"
