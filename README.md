@@ -45,7 +45,7 @@ In secure mode, any ZWDS API call must include a _token_, generated through the 
 
 For clarity, the token request/generation works by accessing a specific Content Provider, identified by the authority `content://com.zebra.devicemanager.zdmcontentprovider` and found at this URI `content://com.zebra.devicemanager.zdmcontentprovider/AcquireToken`. A query performed in this way
 
-<img width="615" height="274" alt="image" src="https://github.com/user-attachments/assets/e5eae95f-422a-4bc2-9a17-7bf064c81ad3" />
+<img width="615" height="274" alt="Image" src="https://github.com/user-attachments/assets/66a56ddd-977e-4012-b3a0-f43b3e42b39e" />
 
 returns a cursor, and the token is found in the first record, under the `query_result` column, as a string type.
 
