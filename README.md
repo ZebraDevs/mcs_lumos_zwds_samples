@@ -93,7 +93,7 @@ Here is the API set to use to interact with the ZWDS service. The numbering sugg
 | - | User/3rd party apps consume the wireless display connection | --- | --- | Latency spikes, QoS drops |
 | 8 | [`DISCONNECT_WIRELESS_DISPLAY`](https://github.com/ZebraDevs/mcs_lumos_zwds_samples/blob/da579e684aa5b7cd33c66bfa4b3b686e6f806f04/Engineering_Sample/POC-Sample/app/src/main/java/com/zebra/zwds/engsample/MainActivity.java#L230) | Tears down connection gracefully | Resource release | Forced disconnect, leakage on error path |
 | 9 | [`DISPLAY CHANGE, CALLBACK OFF`]() | Releases the callback mechanims | --- |  |
-| 10 | [`DEINIT_DEV_SERVICE`](https://github.com/NDZL/ZEC500-ZWDS-API-EXERCISER/blob/f499f5019d94e03ec90ff9384e252d945d19132d/all-APIs/src/main/java/com/zebra/pocsampledev/MainActivity.java#L235) | Service is uninitialized | --- | --- |
+| 10 | [`DEINIT_DEV_SERVICE`](https://github.com/ZebraDevs/mcs_lumos_zwds_samples/blob/da579e684aa5b7cd33c66bfa4b3b686e6f806f04/Engineering_Sample/POC-Sample/app/src/main/java/com/zebra/zwds/engsample/MainActivity.java#L230) | Service is uninitialized | --- | --- |
 
 Here is how this sample app appears when run on a Zebra ET401 tablet (OS is Android 15).
 
