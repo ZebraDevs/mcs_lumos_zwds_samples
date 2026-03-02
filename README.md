@@ -113,49 +113,7 @@ The buttons numbered on the app match those described above.
 Below is a more explicit than the provided success-only flow.
 `For brevity W._D. stands for WIRELESS_DISPLAY`
 
-
-```mermaid
-%%{init: { 
-  "theme": "neutral", 
-  "themeVariables": { 
-    "fontFamily": "Courier New, monospace",
-    "fontSize": "14px",
-    "primaryColor": "#9acd32",
-    "primaryBorderColor": "#1E3A8A",
-    "primaryTextColor": "#1E3A8A"
-  } 
-}}%%
-stateDiagram-v2
-
-    [*] --> Idle
-    Idle --> Initialized : INIT_DEV_SERVICE
-
-    Initialized --> CheckFlags : DISPLAY_CHANGE_CALLBACK_ON
-
-    Initialized --> Idle : DEINIT_DEV_SERVICE
-    Initialized --> Scanning : START_WIRELESS_D._SCAN
-
-    state Scanning {
-        direction LR
-        [*] --> Discovery : GET_AVAILABLE_DISPLAYS
-        Discovery --> Selection : Displays found
-    }
-
-    Scanning --> CheckFlags : User selects display
-    
-
-    state CheckFlags <<choice>>
-    CheckFlags --> Connecting : [isAvailable & canConnect]
-
-
-    Connecting : CONNECT_WIRELESS_DISPLAY
-    Connecting --> Streaming : Connection Succeeded
-
-    Streaming --> Streaming : GET_STATUS (Poll)
-    Streaming --> Disconnecting : DISCONNECT_WIRELESS_DISP.
-
-    Disconnecting --> Initialized : Disconnect Complete
-```
+<img width="945" height="781" alt="Image" src="https://github.com/user-attachments/assets/a6e6421a-8891-4fac-8eec-eba4e9cda78d" />
 
 The key steps to work with these APIs are summarized in the following lines:
 - Initialize the service and enable the DISPLAY CHANGE CALLBACK. Callbacks are useful to detect changes in the display properties such as availability and connectability.
