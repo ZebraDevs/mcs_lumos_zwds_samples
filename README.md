@@ -78,7 +78,7 @@ Making a similar call with action "Disallow Binding to Service", enables the sec
 
 ---
 
-## High-Level Lifecycle ('all-API' module) 
+## High-Level Lifecycle ('Engineering Sample' folder) 
 Here is the API set to use to interact with the ZWDS service. The numbering suggests the calling sequence. Follow the links to access the related source that you can copy/paste directly into your project. Refer to the next paragraph 'Expanded State Machine View' for a complete state diagram.
 
 | Step | API | Purpose | Key Outputs | Common Failure Modes |
@@ -154,7 +154,7 @@ Also, let's compare that API documentation with the actual code implementation
 Act similarly for the other APIs.
 
  
-## The Workflows (code module 'workflow')
+## The Workflows (the ''Developer Sample' folder)
 As shared in this blog post's introduction, an additional sample project is made available to developers. It shows how to automate all the needed API calls according to two workflows: TAP TO CONNECT (where NFC tapping is involved) and SCAN TO CONNECT (where a barcode scanning is required).
 
 I'll briefly describe such workflows in the following paragraphs.
