@@ -7,6 +7,10 @@
     </queries>
 
     <!-- Permissions required by the application -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"
+        android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="com.zebra.devicemanager.provider.READ_PERMISSION" />
     <uses-permission android:name="com.zebra.devicemanager.provider.WRITE_PERMISSION" />
     <!-- Request permission to receive broadcasts -->
@@ -60,20 +64,22 @@
         </activity>
 
         <activity
-            android:name=".HomeActivity"
+            android:name=".advanced.NewHomeActivity"
+            android:configChanges="screenLayout|screenSize|smallestScreenSize|orientation|keyboardHidden|density|uiMode"
             android:exported="true"
             android:label="Developer Sample"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
         </activity>
 
         <activity
-            android:name=".TapConnectActivity"
+            android:name=".advanced.NewTapConnectActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <!-- Activity for scan-to-pair functionality, not exported -->
         <activity
-            android:name=".ScanConnectActivity"
+            android:name=".advanced.NewScanConnectActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />

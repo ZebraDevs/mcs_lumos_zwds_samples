@@ -56,6 +56,7 @@ public class ScanConnectActivity extends AppCompatActivity implements DevService
         txtInstruction = findViewById(R.id.instructionTextView);
     }
 
+
     private final BroadcastReceiver dwBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

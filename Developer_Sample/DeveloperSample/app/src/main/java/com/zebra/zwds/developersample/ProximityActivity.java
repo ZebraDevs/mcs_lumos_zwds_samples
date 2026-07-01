@@ -152,6 +152,12 @@ public class ProximityActivity extends AppCompatActivity implements DevServiceRe
         super.onDestroy();
         // Clear global listener to prevent memory leaks
         //DevResponseReceiver.setGlobalListener(null);
+
+        // CRITICAL: Remove all pending Handler callbacks to prevent MotionEvent errors
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+            Log.d(TAG, "Handler callbacks cleared in onDestroy");
+        }
     }
 
     @Override
@@ -167,7 +173,7 @@ public class ProximityActivity extends AppCompatActivity implements DevServiceRe
                 }
                 break;
             case "BT PROXIMITY STATE":
-                Log.i(TAG, "In Proximity received: " + message);
+                Log.i(TAG, "`In Proximity received`: " + message);
                 DevServiceUtils.handleBtProximityState(this, message, handler);
                 break;
             case "DISCONNECT WIRELESS DISPLAY":
@@ -175,7 +181,7 @@ public class ProximityActivity extends AppCompatActivity implements DevServiceRe
                 break;
             case "STOP DISPLAY SCAN":
                 if (!isConnected) {
-                    DeveloperService.enableWirelessDisplay(ProximityActivity.this);
+                    DeveloperService.enableWirelessDisplay(ProximityActivity.this,"ON");
                 }
                 break;
             case "ENABLE WIRELESS":

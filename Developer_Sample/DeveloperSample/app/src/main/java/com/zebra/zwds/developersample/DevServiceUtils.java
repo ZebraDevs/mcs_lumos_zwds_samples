@@ -60,7 +60,7 @@ public class DevServiceUtils {
             String savedDockName = Utils.getSavedTargetDockName(context);
             String displayAddress = Utils.getDisplayAddress(savedDockName, message);
 
-            if (!ERROR_RESPONSE.equals(displayAddress)) {
+            /*if (!ERROR_RESPONSE.equals(displayAddress)) {
                 retryCount = 0; // Reset on success
                 if (!DeveloperService.connectDevice(context, savedDockName)) {
                     Log.e(TAG, "Failed to initiate connection attempt.");
@@ -83,7 +83,7 @@ public class DevServiceUtils {
                     Log.e(TAG, "Max retries reached. Could not find device.");
                     Toast.makeText(context, "Could not find device after " + MAX_RETRIES + " attempts.", Toast.LENGTH_LONG).show();
                 }
-            }
+            }*/
         }
     }
 

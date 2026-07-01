@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DevResponseReceiver extends BroadcastReceiver {
@@ -83,14 +84,14 @@ public class DevResponseReceiver extends BroadcastReceiver {
 
         if (globalListener != null) {
             String responseType = getResponseType(requestType);
-            globalListener.onDevServiceResponseReceived(requestId, resultCode, getStatusText(statusJson), responseType);
+            globalListener.onDevServiceResponseReceived(requestId, resultCode, getStatusText(statusJson) +":"+resultMessage, responseType);
         } else {
             Toast.makeText(context, "DevServiceResponseListener is null", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    private String getStatusText(String statusJson) {
+   /* private String getStatusText(String statusJson) {
         String statusText = "UNKNOWN";
         try {
             // Parse the JSON string
@@ -112,6 +113,69 @@ public class DevResponseReceiver extends BroadcastReceiver {
         }
         return statusText;
 
+    }*/
+
+    private String getStatusText(String statusJson) {
+        String statusText = "UNKNOWN";
+
+        // Add null/empty check with detailed logging
+        if (statusJson == null || statusJson.isEmpty()) {
+            Log.e("DevResponseReceiver", "#MVK-Dev-Sample# getStatusText: STATUS JSON is null or empty");
+            return statusText;
+        }
+
+        Log.d("DevResponseReceiver", "#MVK-Dev-Sample# getStatusText: Parsing STATUS JSON: " + statusJson);
+
+        try {
+            // Parse the JSON string
+            JSONObject jsonObject = new JSONObject(statusJson);
+
+            // Check if device_status exists
+            if (!jsonObject.has("device_status")) {
+                Log.e("DevResponseReceiver", "#MVK-Dev-Sample# getStatusText: 'device_status' field not found in JSON");
+                return statusText;
+            }
+
+            // Navigate to the device_status object
+            JSONObject deviceStatus = jsonObject.getJSONObject("device_status");
+
+            // Extract device_address and connection_status with null checks
+            String deviceAddress = deviceStatus.optString("device_address", "Unknown Device");
+            int connectionStatus = deviceStatus.optInt("connection_status", -1);
+
+            Log.i("DevResponseReceiver", "#MVK-Dev-Sample# getStatusText: Device Address=" + deviceAddress + ", Status Code=" + connectionStatus);
+
+            // Handle all possible connection status codes
+            switch (connectionStatus) {
+                case 1:
+                    statusText = "Maverick " + deviceAddress + " is CONNECTED";
+                    Log.i("DevResponseReceiver", "#MVK-Dev-Sample# Connection Status: CONNECTED");
+                    break;
+                case 0:
+                    statusText = "Maverick " + deviceAddress + " is DISCONNECTED";
+                    Log.i("DevResponseReceiver", "#MVK-Dev-Sample# Connection Status: DISCONNECTED");
+                    break;
+                case -1:
+                    statusText = "UNKNOWN";
+                    Log.w("DevResponseReceiver", "#MVK-Dev-Sample# Connection Status: UNKNOWN (status code not found in JSON)");
+                    break;
+                default:
+                    // Handle any other status codes that might be returned
+                    statusText = "Maverick " + deviceAddress + " is CONNECTED";
+                    Log.w("DevResponseReceiver", "#MVK-Dev-Sample# Connection Status: Unexpected status code " + connectionStatus + ", treating as CONNECTED");
+                    break;
+            }
+        } catch (JSONException ex) {
+            Log.e("DevResponseReceiver", "#MVK-Dev-Sample# JSONException in getStatusText: " + ex.getMessage());
+            Log.e("DevResponseReceiver", "#MVK-Dev-Sample# Failed JSON: " + statusJson);
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            Log.e("DevResponseReceiver", "#MVK-Dev-Sample# Exception in getStatusText: " + ex.getMessage());
+            Log.e("DevResponseReceiver", "#MVK-Dev-Sample# Failed JSON: " + statusJson);
+            ex.printStackTrace();
+        }
+
+        return statusText;
     }
 
 

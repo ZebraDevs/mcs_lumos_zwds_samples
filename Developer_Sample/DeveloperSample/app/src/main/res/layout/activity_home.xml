@@ -51,7 +51,7 @@
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:drawablePadding="8dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:text="Proximity Settings"
                 android:textColor="@color/white" />
 
@@ -78,6 +78,7 @@
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:drawablePadding="8dp"
+            android:visibility="gone"
             android:text="Desktop Mode Settings"
             android:textColor="@color/white" />
 

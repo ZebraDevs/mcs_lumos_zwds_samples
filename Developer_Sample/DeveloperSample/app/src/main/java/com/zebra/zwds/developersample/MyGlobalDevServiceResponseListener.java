@@ -53,7 +53,8 @@ public class MyGlobalDevServiceResponseListener implements DevServiceResponseLis
         String requestKey = reqType + "_" + reqID + "_" + resultCode + "_" + message;
 
         // Check if we already processed this exact request
-        if (lastProcessedRequest.equals(requestKey) && !reqType.equals("START DISPLAY SCAN") && !reqType.equals("AVAILABLE DISPLAYS") && !reqType.equals("UPDATE UI")) {
+        if (lastProcessedRequest.equals(requestKey) && !reqType.equals("START DISPLAY SCAN") && !reqType.equals("AVAILABLE DISPLAYS") && !reqType.equals("UPDATE UI")  && !reqType.equals("GET STATUS")
+                && !reqType.equals("CONNECTION STATE")) {
             Log.d(TAG, "#MVK-Dev-Sample# Duplicate request ignored: " + reqType);
             return;
         }

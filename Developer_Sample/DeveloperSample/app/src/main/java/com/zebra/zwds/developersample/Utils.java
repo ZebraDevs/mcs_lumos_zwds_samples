@@ -36,30 +36,31 @@ public class Utils {
     public static String secureToken = "";
 
     public static String getDisplayAddress(String targetDockName, String availableDisplayDetails) {
-        // Parse JSON and get deviceAddress
-        String deviceAddress;
+        // Parse JSON and get deviceAddress - handle duplicates by preferring canConnect=true entry
+        boolean matchFound = false;
         try {
             JSONArray jsonArray = new JSONArray(availableDisplayDetails);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject deviceObj = jsonArray.getJSONObject(i);
                 String deviceName = deviceObj.getString("deviceName");
                 String targetAddress = deviceObj.getString("deviceAddress");
-                if (deviceName.equalsIgnoreCase(targetDockName) ||targetAddress.equalsIgnoreCase(targetDockName)) {
-                    deviceAddress = deviceObj.getString("deviceAddress");
+                if (deviceName.equalsIgnoreCase(targetDockName) || targetAddress.equalsIgnoreCase(targetDockName)) {
+                    matchFound = true;
                     boolean isAvailable = deviceObj.getBoolean("isAvailable");
                     boolean canConnect = deviceObj.getBoolean("canConnect");
-
                     if (isAvailable && canConnect) {
-                        return deviceAddress;
-                    } else {
-                        return "ERROR";
+                        return targetAddress; // Best match found among duplicates
                     }
+                    // Don't return ERROR yet — keep searching for a duplicate with canConnect=true
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Not found
+        if (matchFound) {
+            return "ERROR"; // Match(es) found but none had isAvailable && canConnect = true
+        }
+        return null; // No match found at all
     }
 
     /**

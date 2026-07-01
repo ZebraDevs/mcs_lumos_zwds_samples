@@ -444,7 +444,7 @@ public class DeveloperService {
         }
     }
 
-    public static boolean enableWirelessDisplay(Context context) {
+    public static boolean enableWirelessDisplay(Context context, String enableState) {
         if (context == null) {
             Log.e(TAG, "#MVK-Dev-Sample# Context cannot be null");
             return false;
@@ -465,13 +465,13 @@ public class DeveloperService {
             //set the package name to the wireless developer service package
             intent.setPackage(Constants.WIRELESS_DEV_SERVICE_PACKAGE);
             //set proximity connect to true
-            intent.putExtra("ENABLE_DISPLAY", "ON");
+            intent.putExtra("ENABLE_DISPLAY", enableState);
 
             if (isSecureEnabled()) {
                 intent.putExtra(secureTokenKey, Utils.getSecuredToken());
             }
             context.sendBroadcast(intent);
-            Log.d(TAG, "#MVK-Dev-Sample# Developer service enableWirelessDisplay initiated");
+            Log.d(TAG, "#MVK-Dev-Sample# Developer service enableWirelessDisplay initiated : " +enableState);
             return true;
         } catch (Exception e) {
             Log.e(TAG, "#MVK-Dev-Sample# Failed to enableWirelessDisplay developer service: " + e.getMessage(), e);

@@ -36,6 +36,26 @@
             android:text="Mirror Mode"
             android:textColor="@color/colorPrimary" />
 
+        <!-- Progress indicator shown while mode change is in progress -->
+        <ProgressBar
+            android:id="@+id/progress_mode_change"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_progress_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:visibility="gone" />
+
 
 
         <LinearLayout
