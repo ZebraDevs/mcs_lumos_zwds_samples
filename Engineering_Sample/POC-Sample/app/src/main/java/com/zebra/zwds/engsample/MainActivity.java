@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         Button btDeInit = findViewById(R.id.bt_deinit);
         Button btEnable = findViewById(R.id.btl_enale);
         Button btDisable = findViewById(R.id.btl_desable);
+        Button btRegister = findViewById(R.id.bt_register);
+        Button btUnregister = findViewById(R.id.bt_unregister);
         Button startScan = findViewById(R.id.startScan);
         Button stopScan = findViewById(R.id.stopScan);
         Button getStatus = findViewById(R.id.btngetStatus);
@@ -67,9 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout layout = findViewById(R.id.layout);
         LinearLayout modelayout = findViewById(R.id.modelayout);
+        LinearLayout regLayout = findViewById(R.id.reg_layout);
+        LinearLayout unRegLayout = findViewById(R.id.un_reg_layout);
         //layout.setVisibility(View.VISIBLE);  // To make it visible
         layout.setVisibility(View.GONE);     // To hide it completely
         modelayout.setVisibility(View.GONE);     // To hide it completely
+        regLayout.setVisibility(View.GONE);     // To hide it completely
+        unRegLayout.setVisibility(View.GONE);     // To hide it completely
 
         //layout.setVisibility(View.INVISIBLE); // To hide but keep the space
 
@@ -307,26 +313,37 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("PROXIMITY_DISCONNECT", "ON");
 
             String connectText = connectLimit.getText().toString();
-            int connectValue = Integer.parseInt(connectText);
-            //set connect threshold
-           // intent.putExtra("CONNECT_THRESHOLD", 4);
-            intent.putExtra("CONNECT_THRESHOLD", connectValue);
-            //set disconnect threshold
             String diconnectText = disconnectLimit.getText().toString();
-            int disconnectValue = Integer.parseInt(diconnectText);
-           // intent.putExtra("DISCONNECT_THRESHOLD", 8);
-		   intent.putExtra("DISCONNECT_THRESHOLD", disconnectValue);
-            if(checkBox.isChecked()) {
-                //intent secure token
-                String token = GetIntentSecureToken.acquireToken(DEVELOPER_SERVICE_IDENTIFIER, this);
-                intent.putExtra(SECURE_TOKEN, token);
-                Log.e(TAG, "secure Intent sent");
-            }else {
-                Log.e(TAG, "Un secure Intent sent");
+            try {
+                if (connectText.isEmpty() || diconnectText.isEmpty()) {
+                    Toast.makeText(this, "Please enter valid thresholds", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                int connectValue = Integer.parseInt(connectText);
+                //set connect threshold
+                // intent.putExtra("CONNECT_THRESHOLD", 4);
+                intent.putExtra("CONNECT_THRESHOLD", connectValue);
+                //set disconnect threshold
+
+                int disconnectValue = Integer.parseInt(diconnectText);
+                // intent.putExtra("DISCONNECT_THRESHOLD", 8);
+                intent.putExtra("DISCONNECT_THRESHOLD", disconnectValue);
+                if (checkBox.isChecked()) {
+                    //intent secure token
+                    String token = GetIntentSecureToken.acquireToken(DEVELOPER_SERVICE_IDENTIFIER, this);
+                    intent.putExtra(SECURE_TOKEN, token);
+                    Log.e(TAG, "secure Intent sent");
+                } else {
+                    Log.e(TAG, "Un secure Intent sent");
+
+                }
+
+                sendBroadcast(intent);
+            }catch (Exception ex){
+                Toast.makeText(this, "Invalid threshold values. Please enter numeric values.", Toast.LENGTH_SHORT).show();
             }
 
-            sendBroadcast(intent);
         });
 
         /**
@@ -595,15 +612,71 @@ callbackOn.setOnClickListener(view -> {
             sendBroadcast(intent);
         });
 
+        btRegister.setOnClickListener(view -> {
+            Intent intent = new Intent("com.zebra.wirelessdeveloperservice.action.REGISTER_PROXIMITY_CONNECTION");
+            intent.setPackage(WIRELESS_DEV_SERVICE_PACKAGE);
+
+            //set pending intent for response
+            Intent resultIntent = new Intent(this, DevResponseReceiver.class);
+            resultIntent.setAction("com.zebra.wirelessdeveloperservice.action.DEV_SERVICE_RESPONSE");
+            resultIntent.putExtra("request_type", "REGISTER_PROXIMITY_CONNECTION");
+            resultIntent.putExtra("request_id", 2000);//
+            intent.putExtra("CALLBACK_RESPONSE", PendingIntent.getBroadcast(this, 0,
+                    resultIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE));
+
+
+            if(checkBox.isChecked()) {
+                //intent secure token
+                String token = GetIntentSecureToken.acquireToken(DEVELOPER_SERVICE_IDENTIFIER, this);
+                intent.putExtra(SECURE_TOKEN, token);
+                Log.e(TAG, "secure Intent sent");
+            }else {
+                Log.e(TAG, "Un secure Intent sent");
+
+            }
+            sendBroadcast(intent);
+        });
+
+        btUnregister.setOnClickListener(view -> {
+            Intent intent = new Intent("com.zebra.wirelessdeveloperservice.action.UNREGISTER_PROXIMITY_CONNECTION");
+            intent.setPackage(WIRELESS_DEV_SERVICE_PACKAGE);
+
+            //set pending intent for response
+            Intent resultIntent = new Intent(this, DevResponseReceiver.class);
+            resultIntent.setAction("com.zebra.wirelessdeveloperservice.action.DEV_SERVICE_RESPONSE");
+            resultIntent.putExtra("request_type", "UNREGISTER_PROXIMITY_CONNECTION");
+            resultIntent.putExtra("request_id", 2003);//
+            intent.putExtra("CALLBACK_RESPONSE", PendingIntent.getBroadcast(this, 0,
+                    resultIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE));
+
+
+            if(checkBox.isChecked()) {
+                //intent secure token
+                String token = GetIntentSecureToken.acquireToken(DEVELOPER_SERVICE_IDENTIFIER, this);
+                intent.putExtra(SECURE_TOKEN, token);
+                Log.e(TAG, "secure Intent sent");
+            }else {
+                Log.e(TAG, "Un secure Intent sent");
+
+            }
+            sendBroadcast(intent);
+        });
+
         showMoreSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     layout.setVisibility(View.VISIBLE);
                     modelayout.setVisibility(View.VISIBLE);
+                    regLayout.setVisibility(View.VISIBLE);
+                    unRegLayout.setVisibility(View.VISIBLE);
                 } else {
                     layout.setVisibility(View.GONE);
                     modelayout.setVisibility(View.GONE);
+                    regLayout.setVisibility(View.GONE);
+                    unRegLayout.setVisibility(View.GONE);
                 }
             }
         });
